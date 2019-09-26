@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Choose a country name to find out it's population</h2>
+<div id="demo">
+<select id="mySelect">
+<option value="" disabled selected>Choose a country</option>
+</select>
+
+<p id = "population"></p>
+<button type="submit" onclick="displaypopulation()"> Submit </button>
+
+</div>
+
+<script>
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.open("GET", "https://restcountries.eu/rest/v2/all", true);
+  xhttp.send();
+ 
+  xhttp.onload = function() {
+    if (this.status == 200) {
+     var response = JSON.parse(this.responseText);
+     for(var i=0;i<response.length;i++)
+     {
+        var data = response[i].name;
+     
+      if(count != 0)
+      {
+      var select1 = document.getElementById("mySelect");
+       var strUser = select1.options[select1.selectedIndex].value;
+      
+      if(strUser == response[i].name)
+      {
+            var population = response[i].population;
+            
+        document.getElementById('population').innerHTML = "The population of " + "<q>" + strUser + "</q>" + " is " + "<b>" + population + "</b>";
+      }
+      }
+      else
+      {
+          var select = document.getElementById("mySelect");
+          var option = document.createElement("option");
+          option.appendChild(document.createTextNode(data));
+          option.value = data;
+          select.appendChild(option);
+          
+        }
+     }
+    }
+  };
+}
+
+var count = 0;
+
+function displaypopulation()
+{
+
+count++;
+loadDoc();
+}
+
+loadDoc();
+
+</script>
+
+</body>
+</html>
